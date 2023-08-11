@@ -95,11 +95,13 @@ const styles = StyleSheet.create({
   sectionTop: {
     flex: 1,
     flexDirection: 'row',
+    minHeight: 'auto',
   },
 
   sectionBottom: {
     flex: 1,
     flexDirection: 'row',
+    minHeight: 'auto',
   },
   
   // Top weather Containers
