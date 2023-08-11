@@ -99,12 +99,16 @@ function displayTemp(error, currentIsLoaded, currentResult) {
   }
 
   else {
+
+    // use openweather default icons
+    const currentWeatherImg = {uri: 'http://openweathermap.org/img/wn/'+ currentResult.weather[0].icon +'@4x.png'}
+
     return (
       <View style={styles.container}>
         {/* temperature */}
         <View style={styles.content}> 
           <Text style={styles.h1}>{Math.round(currentResult.main.temp)}°</Text>
-          <Image style={styles.img} source={require('../assets/sun.png')} />
+          <Image style={styles.img} source={currentWeatherImg} />
         </View>
       
         {/* Fashion suggestion gallery */}
@@ -161,7 +165,7 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     justifyContent: 'end',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     padding: 15,
 
   },

@@ -56,11 +56,15 @@ function displayCurrentWeather(error, currentIsLoaded, forecastIsLoaded, current
     }
 
   else {
+
+    // use openweather default icons
+    const currentWeatherImg = {uri: 'http://openweathermap.org/img/wn/'+ currentResult.weather[0].icon +'@4x.png'}
+    
     return (
       <View style={styles.container}>
         <View style={styles.content}>
           <Text h2 style={{textTransform: 'capitalize'}}>{currentResult.weather[0].description}</Text>
-          <Image style={styles.img} source={require('../assets/sun.png')} />
+          <Image style={styles.img} source={currentWeatherImg} />
           <Text h1>{Math.round(currentResult.main.temp)}°</Text>
           <Text h4>Precipitation: {forecastResult.list[0].pop * 100}% </Text>
           <Text h4>Humidity: {currentResult.main.humidity}%</Text>

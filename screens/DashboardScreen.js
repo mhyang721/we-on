@@ -65,12 +65,12 @@ function displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, curren
       return `${month}/${day}`;
     }
     
-    // calculate the start index for tomorrow's forecast
+    // calculate start index for tomorrow's forecast
     const currentDate = new Date();
     const tomorrow = new Date(currentDate);
     tomorrow.setDate(currentDate.getDate() + 1);
-    // set time to 8 AM for the next day
-    tomorrow.setHours(8);
+    // set minimum time to 5pm the next day (will draw 6pm daily data)
+    tomorrow.setHours(17);
 
     let startIndex = -1;
     for (let i = 0; i < forecastResult.list.length; i++) {
@@ -81,8 +81,8 @@ function displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, curren
       }
     }
 
+    // if unable to show the next day's data
     if (startIndex === -1) {
-      // if unable to show the next day's data
       return (
         <View>
           <Text>No weather forecast available</Text>
@@ -94,8 +94,12 @@ function displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, curren
     const forecastData = [];
     for (let i = startIndex; i < startIndex + 5 * 8; i += 8) {
       forecastData.push(forecastResult.list[i]);
+      // console.log('Forecast Date:', forecastResult.list[i].dt_txt);
     }
 
+    // use openweather default icons
+    const currentWeatherImg = {uri: 'http://openweathermap.org/img/wn/'+ currentResult.weather[0].icon +'@4x.png'}
+    
     return (
       <>
         <View style={styles.container}>
@@ -105,7 +109,7 @@ function displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, curren
             <View style={styles.sectionTop}>
               {/* The weather photo */}
               <View style={styles.weatherContainer}>
-                <Image style={styles.topWeatherImg} source={require('../assets/sun.png')} />
+                <Image style={styles.topWeatherImg} source={currentWeatherImg} />
               </View>
 
               {/* Temperature */}
@@ -122,9 +126,11 @@ function displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, curren
                   <Text h4>{formatDate(item.dt_txt)}</Text>
                   <Image
                     style={styles.forecastWeatherImg}
-                    source={require('../assets/rain.png')}
+                    source={{uri: 'http://openweathermap.org/img/wn/'+ item.weather[0].icon +'@4x.png'}}
                   />
                   <Text h2>{Math.round(item.main.temp)}°</Text>
+                  {/* date and time of each forecast item for troubleshooting: */}
+                  {/* <Text>{item.dt_txt}</Text> */}
                 </View>
               ))}
             </View>
@@ -244,6 +250,5 @@ const styles = StyleSheet.create({
     width: 150,
     height: 191,
   }
-
 
 });
