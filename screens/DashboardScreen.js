@@ -1,89 +1,166 @@
-import { StyleSheet, View, Image } from 'react-native';
+import { useContext } from 'react';
+import { StyleSheet, View, Image, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-web';
 import { Text } from '@rneui/themed';
 
 import Header from '../components/Header';
 
+// custom weather context
+import { WeatherContext }  from "../components/WeatherContext";
+
 export default function DashboardScreen() {
+
+  const {
+    error, 
+    currentIsLoaded, 
+    forecastIsLoaded, 
+    currentResult, 
+    forecastResult} = useContext(WeatherContext);
+
   return (
-    <>
-      <Header></Header>
-      <View style={styles.container}>
-      <ScrollView>
-        {/* Section Top */}
-        <View style={styles.sectionTop}>
-          {/* The weather photo */}
-          <View style={styles.weatherContainer}>
-            <Image style={styles.topWeatherImg} source={require('../assets/sun.png')} />
-          </View>
-
-          {/* Temperature */}
-          <View style={styles.weatherContainer}>
-            <Text h3>Sunny</Text>
-            <Text h1>26°</Text>
-          </View>
-        </View>
-        
-        {/* Forecast */}
-        <View style={styles.forecastContainer}>
-
-          {/* Day 1 */}
-          <View style={styles.forecastContent}>
-            <Text h4>Date</Text>
-            <Image style={styles.forecastWeatherImg} source={require('../assets/rain.png')} />
-            <Text h2>26°</Text>
-          </View>
-
-          {/* Day 2 */}
-          <View style={styles.forecastContent}>
-            <Text h4>Date</Text>
-            <Image style={styles.forecastWeatherImg} source={require('../assets/clouds.png')} />
-            <Text h2>26°</Text>
-          </View>
-
-          {/* Day 3 */}
-          <View style={styles.forecastContent}>
-            <Text h4>Date</Text>
-            <Image style={styles.forecastWeatherImg} source={require('../assets/wind.png')} />
-            <Text h2>26°</Text>
-          </View>
-
-          {/* Day 4 */}
-          <View style={styles.forecastContent}>
-            <Text h4>Date</Text>
-            <Image style={styles.forecastWeatherImg} source={require('../assets/snow.png')} />
-            <Text h2>26°</Text>
-          </View>
-
-          {/* Day 5 */}
-          <View style={styles.forecastContent}>
-            <Text h4>Date</Text>
-            <Image style={styles.forecastWeatherImg} source={require('../assets/storm.png')} />
-            <Text h2>26°</Text>
-          </View>
-
-        </View>
-
-        {/* Section Bottom */}
-        <View style={styles.sectionBottom}>
-          {/* Fashion advise 1 */}
-          <View style={styles.fashionContainer}>
-            <Image style={styles.fashionImg} source={require('../assets/fashion-photo5.png')} />
-          </View>
-
-          {/* Fashion advise 2 */}
-          <View style={styles.fashionContainer}>
-            <Image style={styles.fashionImg} source={require('../assets/fashion-photo6.png')} />
-          </View>
-        </View>
-
-      </ScrollView>
-      </View>
-    </>
+    <View style={styles.container}>
+      {displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, currentResult, forecastResult)}
+    </View>
   );
+ 
+}
+
+// display weather forecast data
+function displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, currentResult, forecastResult) {
+  
+  if (error) {
+    // show an error message
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  } 
+
+  else if (!currentIsLoaded || !forecastIsLoaded) {
+    // show loading text
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size='large' color='#A4758E' />
+      </View>
+    );
+  }
+
+  else if (!forecastResult) {
+    // not an error but no results, show a message
+    return (
+      <View>
+        <Text>No weather forecast available</Text>
+      </View>
+    );
+  }
+
+  else {
+
+    // format date in month/day format
+    const formatDate = (datetimeString) => {
+      const date = new Date(datetimeString);
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      return `${month}/${day}`;
+    }
+    
+    // calculate the start index for tomorrow's forecast
+    const currentDate = new Date();
+    const tomorrow = new Date(currentDate);
+    tomorrow.setDate(currentDate.getDate() + 1);
+    // set time to 8 AM for the next day
+    tomorrow.setHours(8);
+
+    let startIndex = -1;
+    for (let i = 0; i < forecastResult.list.length; i++) {
+      const forecastDate = new Date(forecastResult.list[i].dt_txt);
+      if (forecastDate >= tomorrow) {
+        startIndex = i;
+        break;
+      }
+    }
+
+    if (startIndex === -1) {
+      // if unable to show the next day's data
+      return (
+        <View>
+          <Text>No weather forecast available</Text>
+        </View>
+      );
+    }
+
+    // display 5-day forecast starting from tomorrow
+    const forecastData = [];
+    for (let i = startIndex; i < startIndex + 5 * 8; i += 8) {
+      forecastData.push(forecastResult.list[i]);
+    }
+
+    return (
+      <>
+        <View style={styles.container}>
+          <Header></Header>
+          <ScrollView>
+            {/* Section Top */}
+            <View style={styles.sectionTop}>
+              {/* The weather photo */}
+              <View style={styles.weatherContainer}>
+                <Image style={styles.topWeatherImg} source={require('../assets/sun.png')} />
+              </View>
+
+              {/* Temperature */}
+              <View style={styles.weatherContainer}>
+                <Text h3 style={{textTransform: 'capitalize'}}>{currentResult.weather[0].description}</Text>
+                <Text h1>{Math.round(currentResult.main.temp)}°</Text>
+              </View>
+            </View>
+            
+            {/* 5-Day Forecast */}
+            <View style={styles.forecastContainer}>
+              {forecastData.map((item) => (
+                <View style={styles.forecastContent} key={item.dt_txt}>
+                  <Text h4>{formatDate(item.dt_txt)}</Text>
+                  <Image
+                    style={styles.forecastWeatherImg}
+                    source={require('../assets/rain.png')}
+                  />
+                  <Text h2>{Math.round(item.main.temp)}°</Text>
+                </View>
+              ))}
+            </View>
+
+            {/* Section Bottom */}
+            <View style={styles.sectionBottom}>
+              {/* Fashion advise 1 */}
+              <View style={styles.fashionContainer}>
+                <Image style={styles.fashionImg} source={require('../assets/fashion-photo5.png')} />
+              </View>
+
+              {/* Fashion advise 2 */}
+              <View style={styles.fashionContainer}>
+                <Image style={styles.fashionImg} source={require('../assets/fashion-photo6.png')} />
+              </View>
+            </View>
+
+          </ScrollView>
+        </View>
+      </>
+    );
+  }
+  
 }
 
 const styles = StyleSheet.create({
+  // style for spinner
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+    backgroundColor: '#FFFBEF',
+  },
+  
   container: {
     flex: 1,
     alignItems: 'center',
@@ -107,6 +184,7 @@ const styles = StyleSheet.create({
   // Top weather Containers
   weatherContainer: {
     justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#FAF8DA',
     borderColor: '#F9F3C5',
     borderWidth: 4,
@@ -121,6 +199,7 @@ const styles = StyleSheet.create({
   forecastContainer: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
     backgroundColor: '#FAF8DA',
     borderColor: '#F9F3C5',
     borderWidth: 4,
@@ -129,9 +208,10 @@ const styles = StyleSheet.create({
   },
   
   forecastContent: {
-    // flexDirection: 'column',
+    flexDirection: 'column',
     paddingHorizontal: 15,
     justifyContent: 'center',
+    alignItems: 'center',
   },
 
   // Fashion container

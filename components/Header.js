@@ -1,24 +1,35 @@
+import { useContext } from 'react';
 import { StyleSheet, View, Text, } from 'react-native';
 // import { SearchBar } from '@rneui/themed';
+
+// custom weather context
+import { WeatherContext }  from '../components/WeatherContext';
 
 // Custom Icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Header() {
+
+  const {currentResult} = useContext(WeatherContext);
+    
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <View style={styles.container}>
-      {/* <Text>Header</Text> */}
       <View style={styles.headerContainer}>
         <MaterialCommunityIcons name="map-marker" color="#9B9132" size={40} />
         <View style={styles.headerInfo}>
-          <Text style={styles.date}>Date</Text>
-          <Text style={styles.location}>Location</Text>
+          <Text style={styles.date}>{formatDate(Date.now())}</Text>
+          <Text style={styles.location}>{currentResult.name}</Text>
         </View>
         <MaterialCommunityIcons name="account" color="#9B9132" size={40} />
       </View>
     </View>
-
   );
+  
 }
 
 const styles = StyleSheet.create({

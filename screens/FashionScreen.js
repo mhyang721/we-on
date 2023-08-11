@@ -1,9 +1,12 @@
-import { StyleSheet, View, Image } from 'react-native';
+import { useContext } from 'react';
+import { StyleSheet, View, Image, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-web';
 import { Text, Card } from '@rneui/themed';
 
 import Header from '../components/Header';
 
+// custom weather context
+import { WeatherContext }  from "../components/WeatherContext";
 
 // const App = () => {
 //   const [randomImage, setRandomImage] = React.useState('');
@@ -51,13 +54,56 @@ import Header from '../components/Header';
 // }
 
 export default function FashionScreen() {
+
+  const {
+    error, 
+    currentIsLoaded, 
+    currentResult} = useContext(WeatherContext);
+
   return (
-    <>
+    <View style={styles.container}>
       <Header></Header>
+      {displayTemp(error, currentIsLoaded, currentResult)}
+    </View>
+  );
+}
+
+// display weather forecast data
+function displayTemp(error, currentIsLoaded, currentResult) {
+  
+  if (error) {
+    // show an error message
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  } 
+
+  else if (!currentIsLoaded) {
+    // show loading text
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size='large' color='#A4758E' />
+      </View>
+    );
+  }
+
+  else if (!currentResult) {
+    // not an error but no results, show a message
+    return (
+      <View>
+        <Text>No weather forecast available</Text>
+      </View>
+    );
+  }
+
+  else {
+    return (
       <View style={styles.container}>
-        {/* temperture */}
+        {/* temperature */}
         <View style={styles.content}> 
-          <Text style={styles.h1}>26°</Text>
+          <Text style={styles.h1}>{Math.round(currentResult.main.temp)}°</Text>
           <Image style={styles.img} source={require('../assets/sun.png')} />
         </View>
       
@@ -87,15 +133,26 @@ export default function FashionScreen() {
             <Card style={styles.cardStyle}>
               <Image style={styles.fashionImg} source={require('../assets/fashion-photo6.png')} />
             </Card>
-
           </View>
         </ScrollView>
+
       </View>
-    </>
-  );
+    );
+  }
+
 }
 
 const styles = StyleSheet.create({
+  // style for spinner
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+    backgroundColor: '#FFFBEF',
+  },
+
   container: {
     flex: 1,
     backgroundColor: '#FFFBEF',
