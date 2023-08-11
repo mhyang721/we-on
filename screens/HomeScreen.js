@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import { Button, Text } from '@rneui/themed';
+import { Text, Image } from '@rneui/themed';
 
 import Header from '../components/Header';
 
@@ -8,11 +8,14 @@ export default function HomeScreen() {
     <>
       <Header></Header>
       <View style={styles.container}>
-        <Text h1>Text H1</Text>
-        <Text h2>Text H2</Text>
-        <Text h3>Text H3</Text>
-        <Text h4>Text H4</Text>
-        <Text>Text p</Text>
+        <View style={styles.content}>
+          <Text h2>Sunny</Text>
+          <Image style={styles.img} source={require('../assets/sun.png')} />
+          <Text h1>26°</Text>
+          <Text h4>Precipitation: 0% </Text>
+          <Text h4>Humidity: 47%</Text>
+          <Text h4>Wind: 16 km/h</Text>
+        </View>
       </View>
     </>
   );
@@ -23,7 +26,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff'
+    backgroundColor: '#FFFBEF',
   },
+
+  content: {
+    alignItems: 'left',
+    paddingLeft: 20,
+  },
+
+  img: {
+    width: 300,
+    height: 300,
+    justifyContent: 'center'
+  }
 
 });

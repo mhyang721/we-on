@@ -20,6 +20,9 @@ import HomeScreen from './screens/HomeScreen'
 import FashionScreen from './screens/FashionScreen';
 import DashboardScreen from './screens/DashboardScreen';
 
+// Custom Icons
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -46,10 +49,37 @@ export default function App() {
     <SafeAreaProvider>
       <ThemeProvider theme={WeonTheme} >
         <NavigationContainer>
-          <Tab.Navigator initialRouteName="Home" >
-            <Tab.Screen name="Fashion" component={FashionScreen} />
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Dashboard" component={DashboardScreen} />
+          <Tab.Navigator initialRouteName="Dashboard" >
+
+            <Tab.Screen 
+              name="Fashion" 
+              component={FashionScreen} 
+              options={{
+                tabBarIcon:({ color, size}) => (
+                  <MaterialCommunityIcons name="tshirt-crew" color="#39404F" size={25} />
+                ),
+              }}
+            />
+
+            <Tab.Screen 
+              name="Home" 
+              component={HomeScreen}
+              options={{
+                tabBarIcon:({ color, size }) => (
+                  <MaterialCommunityIcons name="cloud" color="#39404F" size={25} />
+                )
+              }}
+            />
+
+            <Tab.Screen
+              name="Dashboard"
+              component={DashboardScreen} 
+              options={{
+                tabBarIcon:({ color, size}) => (
+                  <MaterialCommunityIcons name="view-dashboard" color="#39404F" size={25} />
+                )
+              }}
+            />
           </Tab.Navigator>
         </NavigationContainer>
       </ThemeProvider>
@@ -65,6 +95,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     justifyContent: "space-around",
-    padding: 10
+    padding: 10,
   },
 });
