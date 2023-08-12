@@ -1,6 +1,5 @@
 import { useContext } from 'react';
-import { StyleSheet, View, Image, ActivityIndicator } from 'react-native';
-import { ScrollView } from 'react-native-web';
+import { StyleSheet, View, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { Text } from '@rneui/themed';
 
 import Header from '../components/Header';
