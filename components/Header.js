@@ -60,13 +60,13 @@ const styles = StyleSheet.create({
     color: '#9B9132',
     fontSize: 16,
     fontFamily: 'poppins-r',
-    fontWeight: 400,
+    // fontWeight: 400,
   },
 
   location: {
     color: '#9B9132',
     fontSize: 36,
     fontFamily: 'itc-aggp-b',
-    fontWeight: 700,
+    // fontWeight: 700,
   }
 });
