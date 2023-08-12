@@ -17,9 +17,11 @@ export default function DashboardScreen() {
     forecastResult} = useContext(WeatherContext);
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
+
+<Header></Header>
       {displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, currentResult, forecastResult)}
-    </View>
+    </ScrollView>
   );
  
 }
@@ -101,8 +103,7 @@ function displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, curren
     
     return (
       <View style={styles.container}>
-        <ScrollView>
-          <Header></Header>
+        <View style={styles.content}>
           {/* Section Top */}
           <View style={styles.sectionTop}>
             {/* The weather photo */}
@@ -146,7 +147,7 @@ function displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, curren
             </View>
           </View>
 
-        </ScrollView>
+        </View>
       </View>
     );
   }
@@ -169,6 +170,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFBEF',
+  },
+
+  content: {
+    alignItems: 'center',
   },
 
   // Section Container
@@ -194,7 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     padding: 10,
     margin: 10,
-    width: 200,
+    // width: 200,
     height: 200,
   },
   
@@ -208,6 +213,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 30,
     margin: 15,
+    paddingHorizontal: 6,
   },
   
   forecastContent: {
@@ -226,11 +232,11 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 30,
     padding: 10,
+    paddingHorizontal: 18,
     margin: 10,
     height: 211,
     overflow: 'hidden',
   },
-
 
   // images
   topWeatherImg: {
