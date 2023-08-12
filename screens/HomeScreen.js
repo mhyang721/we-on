@@ -58,18 +58,44 @@ function displayCurrentWeather(error, currentIsLoaded, forecastIsLoaded, current
   else {
 
     // use openweather default icons
-    const currentWeatherImg = {uri: 'http://openweathermap.org/img/wn/'+ currentResult.weather[0].icon +'@4x.png'}
-    
+    let currentWeatherImg = null;
+    if (currentResult && currentResult.weather && currentResult.weather[0]) {
+      currentWeatherImg = { uri: 'http://openweathermap.org/img/wn/' + currentResult.weather[0].icon + '@4x.png' };
+    }
+
+    // windspeed calculations
+    let windSpeed = null;
+    if (currentResult && currentResult.wind) {
+      {/* km/h = m/s * 3.6 */}
+      windSpeed = Math.round(currentResult.wind.speed * 3.6);
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.content}>
-          <Text h2 style={{textTransform: 'capitalize'}}>{currentResult.weather[0].description}</Text>
-          <Image style={styles.img} source={currentWeatherImg} />
-          <Text h1>{Math.round(currentResult.main.temp)}°</Text>
-          <Text h4>Precipitation: {forecastResult.list[0].pop * 100}% </Text>
-          <Text h4>Humidity: {currentResult.main.humidity}%</Text>
-          {/* km/h = m/s * 3.6 */}
-          <Text h4>Wind: {Math.round(currentResult.wind.speed * 3.6)} km/h</Text>
+          {currentResult && currentResult.weather && currentResult.weather[0] ? (
+            <Text h2 style={{ textTransform: 'capitalize' }}>
+              {currentResult.weather[0].description}
+            </Text>
+            ) : null
+          }
+          {currentWeatherImg ? <Image style={styles.img} source={currentWeatherImg} /> : null}
+          {currentResult && currentResult.main ? (
+            <Text h1>{Math.round(currentResult.main.temp)}°</Text>
+            ) : null
+          }
+          {forecastResult && forecastResult.list && forecastResult.list[0] ? (
+            <Text h4>Precipitation: {forecastResult.list[0].pop * 100}%</Text>
+            ) : null
+          }
+          {currentResult && currentResult.main ? (
+            <Text h4>Humidity: {currentResult.main.humidity}%</Text>
+            ) : null
+          }
+          {windSpeed !== null ? (
+            <Text h4>Wind: {windSpeed} km/h</Text>
+            ) : null
+          }
         </View>
       </View>
     );
