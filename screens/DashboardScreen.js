@@ -6,7 +6,7 @@ import { Text } from '@rneui/themed';
 import Header from '../components/Header';
 
 // custom weather context
-import { WeatherContext }  from "../components/WeatherContext";
+import { WeatherContext }  from '../components/WeatherContext';
 
 export default function DashboardScreen() {
 

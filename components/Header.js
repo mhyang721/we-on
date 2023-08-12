@@ -20,12 +20,12 @@ export default function Header() {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <MaterialCommunityIcons name="map-marker" color="#9B9132" size={40} />
+        <MaterialCommunityIcons name='map-marker' color='#9B9132' size={40} />
         <View style={styles.headerInfo}>
           <Text style={styles.date}>{formatDate(Date.now())}</Text>
           <Text style={styles.location}>{currentResult.name}</Text>
         </View>
-        <MaterialCommunityIcons name="account" color="#9B9132" size={40} />
+        <MaterialCommunityIcons name='account' color='#9B9132' size={40} />
       </View>
     </View>
   );
@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
   date: {
     color: '#9B9132',
     fontSize: 16,
-    fontFamily: 'Poppins',
+    fontFamily: 'poppins-r',
     fontWeight: 400,
   },
 
   location: {
     color: '#9B9132',
     fontSize: 36,
-    fontFamily: 'ITC Avant Garde Gothic Pro',
+    fontFamily: 'itc-aggp-b',
     fontWeight: 700,
   }
 });

@@ -102,34 +102,34 @@ export default function App() {
       <WeatherContext.Provider value={{error, currentIsLoaded, forecastIsLoaded, currentResult, forecastResult}}>
         <ThemeProvider theme={WeonTheme} >
           <NavigationContainer>
-            <Tab.Navigator initialRouteName="Home" >
+            <Tab.Navigator initialRouteName='Home' >
 
               <Tab.Screen 
-                name="Fashion" 
+                name='Fashion' 
                 component={FashionScreen} 
                 options={{
                   tabBarIcon:({ color, size}) => (
-                    <MaterialCommunityIcons name="tshirt-crew" color="#39404F" size={25} />
+                    <MaterialCommunityIcons name='tshirt-crew' color='#39404F' size={25} />
                   ),
                 }}
               />
 
               <Tab.Screen 
-                name="Home" 
+                name='Home' 
                 component={HomeScreen}
                 options={{
                   tabBarIcon:({ color, size }) => (
-                    <MaterialCommunityIcons name="cloud" color="#39404F" size={25} />
+                    <MaterialCommunityIcons name='cloud' color='#39404F' size={25} />
                   )
                 }}
               />
 
               <Tab.Screen
-                name="Dashboard"
+                name='Dashboard'
                 component={DashboardScreen} 
                 options={{
                   tabBarIcon:({ color, size}) => (
-                    <MaterialCommunityIcons name="view-dashboard" color="#39404F" size={25} />
+                    <MaterialCommunityIcons name='view-dashboard' color='#39404F' size={25} />
                   )
                 }}
               />
