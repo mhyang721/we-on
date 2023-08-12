@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native';
 import { Text, Image } from '@rneui/themed';
 
 import Header from '../components/Header';
@@ -17,10 +17,10 @@ export default function HomeScreen() {
     forecastResult} = useContext(WeatherContext);
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
       <Header></Header>
       {displayCurrentWeather(error, currentIsLoaded, forecastIsLoaded, currentResult, forecastResult)}
-    </View>
+    </ScrollView>
   );
 
 }
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFBEF',
+    paddingBottom: 40,
   },
 
   content: {

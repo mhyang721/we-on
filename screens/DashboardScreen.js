@@ -100,56 +100,54 @@ function displayForecastWeather(error, currentIsLoaded, forecastIsLoaded, curren
     const currentWeatherImg = {uri: 'http://openweathermap.org/img/wn/'+ currentResult.weather[0].icon +'@4x.png'}
     
     return (
-      <>
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <ScrollView>
           <Header></Header>
-          <ScrollView>
-            {/* Section Top */}
-            <View style={styles.sectionTop}>
-              {/* The weather photo */}
-              <View style={styles.weatherContainer}>
-                <Image style={styles.topWeatherImg} source={currentWeatherImg} />
-              </View>
-
-              {/* Temperature */}
-              <View style={styles.weatherContainer}>
-                <Text h3 style={{textTransform: 'capitalize'}}>{currentResult.weather[0].description}</Text>
-                <Text h1>{Math.round(currentResult.main.temp)}°</Text>
-              </View>
-            </View>
-            
-            {/* 5-Day Forecast */}
-            <View style={styles.forecastContainer}>
-              {forecastData.map((item) => (
-                <View style={styles.forecastContent} key={item.dt_txt}>
-                  <Text h4>{formatDate(item.dt_txt)}</Text>
-                  <Image
-                    style={styles.forecastWeatherImg}
-                    source={{uri: 'http://openweathermap.org/img/wn/'+ item.weather[0].icon +'@4x.png'}}
-                  />
-                  <Text h2>{Math.round(item.main.temp)}°</Text>
-                  {/* date and time of each forecast item for troubleshooting: */}
-                  {/* <Text>{item.dt_txt}</Text> */}
-                </View>
-              ))}
+          {/* Section Top */}
+          <View style={styles.sectionTop}>
+            {/* The weather photo */}
+            <View style={styles.weatherContainer}>
+              <Image style={styles.topWeatherImg} source={currentWeatherImg} />
             </View>
 
-            {/* Section Bottom */}
-            <View style={styles.sectionBottom}>
-              {/* Fashion advise 1 */}
-              <View style={styles.fashionContainer}>
-                <Image style={styles.fashionImg} source={require('../assets/fashion-photo5.png')} />
+            {/* Temperature */}
+            <View style={styles.weatherContainer}>
+              <Text h3 style={{textTransform: 'capitalize'}}>{currentResult.weather[0].description}</Text>
+              <Text h1>{Math.round(currentResult.main.temp)}°</Text>
+            </View>
+          </View>
+          
+          {/* 5-Day Forecast */}
+          <View style={styles.forecastContainer}>
+            {forecastData.map((item) => (
+              <View style={styles.forecastContent} key={item.dt_txt}>
+                <Text h4>{formatDate(item.dt_txt)}</Text>
+                <Image
+                  style={styles.forecastWeatherImg}
+                  source={{uri: 'http://openweathermap.org/img/wn/'+ item.weather[0].icon +'@4x.png'}}
+                />
+                <Text h2>{Math.round(item.main.temp)}°</Text>
+                {/* date and time of each forecast item for troubleshooting: */}
+                {/* <Text>{item.dt_txt}</Text> */}
               </View>
+            ))}
+          </View>
 
-              {/* Fashion advise 2 */}
-              <View style={styles.fashionContainer}>
-                <Image style={styles.fashionImg} source={require('../assets/fashion-photo6.png')} />
-              </View>
+          {/* Section Bottom */}
+          <View style={styles.sectionBottom}>
+            {/* Fashion advise 1 */}
+            <View style={styles.fashionContainer}>
+              <Image style={styles.fashionImg} source={require('../assets/fashion-photo5.png')} />
             </View>
 
-          </ScrollView>
-        </View>
-      </>
+            {/* Fashion advise 2 */}
+            <View style={styles.fashionContainer}>
+              <Image style={styles.fashionImg} source={require('../assets/fashion-photo6.png')} />
+            </View>
+          </View>
+
+        </ScrollView>
+      </View>
     );
   }
   

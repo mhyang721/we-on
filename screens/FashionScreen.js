@@ -60,10 +60,10 @@ export default function FashionScreen() {
     currentResult} = useContext(WeatherContext);
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
       <Header></Header>
       {displayTemp(error, currentIsLoaded, currentResult)}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -163,10 +163,10 @@ const styles = StyleSheet.create({
 
   content: {
     flexDirection: 'row',
-    justifyContent: 'end',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     padding: 15,
-
+    paddingTop: 0,
   },
   
   h1: {

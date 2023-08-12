@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#FFFBEF',
     padding: 20,
+    paddingVertical: 60,
   },
 
   headerContainer: {
